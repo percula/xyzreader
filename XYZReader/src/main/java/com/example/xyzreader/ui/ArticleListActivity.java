@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,14 +17,18 @@ import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
-import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
+import com.example.xyzreader.utils;
 
 import java.util.Random;
+
+import static com.example.xyzreader.R.id.toolbar;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -43,7 +48,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(toolbar);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
@@ -53,7 +58,21 @@ public class ArticleListActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             refresh();
         }
+
+        // Make statusbar transparent on newer versions of android
+        // Grader - if you know how to keep the navbar opaque, please let me know
+        // I searched for an answer but could only find how to make both transparent
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+            // Set the margin to match the Status Bar height
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mToolbar.getLayoutParams();
+            lp.topMargin += utils.getStatusBarHeight(this);
+        }
     }
+
+
 
     private void refresh() {
         startService(new Intent(this, UpdaterService.class));
@@ -106,7 +125,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         // Set toolbar image to a random image from the cursor
         int count = cursor.getCount();
         Random r = new Random();
-        int randomPic = r.nextInt(count + 1);
+        int randomPic = r.nextInt(count);
 
         // Just in case...
         if (randomPic > count) {
@@ -146,8 +165,13 @@ public class ArticleListActivity extends AppCompatActivity implements
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
+                    Intent intent = new Intent(getApplicationContext(), ArticleDetailMaterialActivity.class);
+                    long position = getItemId(vh.getAdapterPosition());
+                    intent.putExtra(ArticleDetailMaterialActivity.ARG_ITEM_ID2,position);
+                    startActivity(intent);
+
+//                    startActivity(new Intent(Intent.ACTION_VIEW,
+//                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
                 }
             });
             return vh;

@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.xyzreader.ui.ArticleDetailActivity"
+            android:name="com.example.xyzreader.ui.ArticleDetailMaterialActivity"
             android:parentActivityName="com.example.xyzreader.ui.ArticleListActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -51,6 +51,16 @@
             android:name="com.example.xyzreader.data.ItemsProvider"
             android:authorities="com.example.xyzreader"
             android:exported="false" />
+
+        <!-- <activity -->
+        <!-- android:name=".ui.ArticleDetailMaterialActivity" -->
+        <!-- android:label="@string/title_activity_article_detail_material" -->
+        <!-- android:parentActivityName=".ui.ArticleListActivity" -->
+        <!-- android:theme="@style/Theme.Bacon"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="com.example.xyzreader.ui.ArticleListActivity" /> -->
+        <!-- </activity> -->
     </application>
 
 </manifest>
