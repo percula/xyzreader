@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -29,6 +30,7 @@ import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.utils;
 
 import static com.example.xyzreader.R.id.toolbar;
+import static com.example.xyzreader.R.id.toolbar_layout;
 
 public class ArticleDetailMaterialActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
@@ -70,14 +72,23 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
             }
         }
 
+        getSupportActionBar().setTitle("Article Title");
+
         getLoaderManager().initLoader(0, null, this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.action_share), Toast.LENGTH_SHORT).show();
+
+                // In real app, I would have this send an implicit intent to share the link to the
+                // article, but since it is a fake app, a toast will have to do.
+//                Uri webpage = ItemsContract.Items.buildItemUri(mItemId);
+//                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(intent);
+//                }
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -97,7 +108,7 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
 
 
         if (mCursor != null) {
-            getSupportActionBar().setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+            ((CollapsingToolbarLayout) findViewById(toolbar_layout)).setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
             bylineView.setText(Html.fromHtml(
                     DateUtils.getRelativeTimeSpanString(
                             mCursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),

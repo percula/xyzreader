@@ -1,10 +1,7 @@
 package com.example.xyzreader.ui;
 
 import android.app.LoaderManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Build;
@@ -18,6 +15,8 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -42,6 +41,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private static String LOG_TAG = "ArticleListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,17 @@ public class ArticleListActivity extends AppCompatActivity implements
         mToolbar = (Toolbar) findViewById(toolbar);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+
+        // Make sure SwipeRefreshLayout actually does something and stops when updated
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        refresh();
+                    }
+                }
+        );
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         getLoaderManager().initLoader(0, null, this);
@@ -73,7 +84,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
 
-
     private void refresh() {
         startService(new Intent(this, UpdaterService.class));
     }
@@ -81,30 +91,11 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        registerReceiver(mRefreshingReceiver,
-                new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mRefreshingReceiver);
-    }
-
-    private boolean mIsRefreshing = false;
-
-    private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
-                mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
-                updateRefreshingUI();
-            }
-        }
-    };
-
-    private void updateRefreshingUI() {
-        mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
     }
 
     @Override
@@ -123,21 +114,27 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView.setLayoutManager(sglm);
 
         // Set toolbar image to a random image from the cursor
-        int count = cursor.getCount();
         Random r = new Random();
-        int randomPic = r.nextInt(count);
-
-        // Just in case...
-        if (randomPic > count) {
-            randomPic = 0;
-        }
+        int randomPic = r.nextInt(cursor.getCount());
 
         cursor.moveToPosition(randomPic);
         DynamicHeightNetworkImageView toolbarImage = (DynamicHeightNetworkImageView) findViewById(R.id.toolbar_background);
+
+        Animation fadeIn = AnimationUtils.loadAnimation(ArticleListActivity.this, R.anim.fade_in);
+        Animation fadeOut = AnimationUtils.loadAnimation(ArticleListActivity.this, R.anim.fade_out);
+
+        toolbarImage.setAnimation(fadeOut);
+        fadeOut.start();
+
         toolbarImage.setImageUrl(
                 cursor.getString(ArticleLoader.Query.THUMB_URL),
                 ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
         toolbarImage.setAspectRatio(cursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+
+        toolbarImage.setAnimation(fadeIn);
+        fadeIn.start();
+
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

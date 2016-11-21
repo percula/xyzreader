@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Got help for this from http://stackoverflow.com/a/24939499-->
+<set xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <alpha
+        android:duration="@android:integer/config_mediumAnimTime"
+        android:fromAlpha="1.0"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:toAlpha="0.0" />
+
+</set>

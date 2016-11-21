@@ -27,6 +27,7 @@ public final class R {
         public static final int design_snackbar_in=0x7f05000f;
         public static final int design_snackbar_out=0x7f050010;
         public static final int fade_in=0x7f050011;
+        public static final int fade_out=0x7f050012;
     }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
