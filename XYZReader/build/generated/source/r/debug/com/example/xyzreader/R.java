@@ -3340,8 +3340,6 @@ containing a value of this type.
         public static final int Theme_AppCompat_Light_DialogWhenLarge=0x7f08011c;
         public static final int Theme_AppCompat_Light_NoActionBar=0x7f08011d;
         public static final int Theme_AppCompat_NoActionBar=0x7f08011e;
-        /** <item name="android:statusBarColor">@android:color/transparent</item>
-         */
         public static final int Theme_Bacon=0x7f08008c;
         public static final int Theme_Bacon_AppBarOverlay=0x7f08011f;
         /** <item name="statusBarColor">@android:color/transparent</item>

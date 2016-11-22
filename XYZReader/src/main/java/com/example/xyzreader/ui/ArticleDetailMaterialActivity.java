@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.utils;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import static com.example.xyzreader.R.id.toolbar;
 import static com.example.xyzreader.R.id.toolbar_layout;
@@ -64,6 +66,14 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
             // Set the margin to match the Status Bar height
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mToolbar.getLayoutParams();
             lp.topMargin += utils.getStatusBarHeight(this);
+
+            // Using https://github.com/jgilfelt/SystemBarTint library
+            // create our manager instance after the content view is set
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            // enable navigation bar tint
+            tintManager.setNavigationBarTintEnabled(true);
+            // set the transparent color of the status bar
+            tintManager.setTintColor(Color.parseColor("#FF000000"));
         }
 
         if (extras != null) {

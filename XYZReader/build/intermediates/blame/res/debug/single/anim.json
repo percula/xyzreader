@@ -40,12 +40,12 @@
         "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/res/anim/abc_slide_out_bottom.xml"
     },
     {
-        "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim/design_fab_in.xml",
-        "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/design/25.0.0/res/anim/design_fab_in.xml"
-    },
-    {
         "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim/abc_slide_out_top.xml",
         "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/res/anim/abc_slide_out_top.xml"
+    },
+    {
+        "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim/design_fab_in.xml",
+        "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/design/25.0.0/res/anim/design_fab_in.xml"
     },
     {
         "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim/abc_fade_out.xml",
