@@ -14,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
+        android:background="@color/colorMuted"
+        android:elevation="@dimen/app_bar_elevation"
         android:theme="@style/Theme.Bacon.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -21,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/colorMuted"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <ImageView
                 android:layout_width="match_parent"

@@ -23,4 +23,5 @@
     <color name="colorPrimaryLight">#BA68C8</color>
     <color name="colorAccent">#FF9100</color>
     <color name="ltgray">#ffe0e0e0</color>
+    <color name="colorMuted">#333333</color>
 </resources>

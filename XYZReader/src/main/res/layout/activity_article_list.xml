@@ -10,15 +10,15 @@
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="?colorPrimary"
-        android:elevation="8dp">
+        android:background="@color/colorMuted"
+        android:elevation="@dimen/app_bar_elevation">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/colorMuted"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.example.xyzreader.ui.DynamicHeightNetworkImageView

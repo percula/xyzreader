@@ -3,6 +3,7 @@ package com.example.xyzreader.ui;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -10,7 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -35,7 +38,7 @@ import static com.example.xyzreader.R.id.toolbar;
 import static com.example.xyzreader.R.id.toolbar_layout;
 
 public class ArticleDetailMaterialActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>{
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String ARG_ITEM_ID2 = "item_id";
     private Cursor mCursor;
@@ -43,6 +46,8 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
     private View mRootView;
     private static final String TAG = "ArtDetMatActivity";
     private Toolbar mToolbar;
+    private int mMutedColor;
+    private int mAccentColor;
 
 
     @Override
@@ -57,6 +62,10 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
 
         mToolbar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(mToolbar);
+
+        // Set colors to values in color resources
+        mMutedColor = (int) ResourcesCompat.getColor(getResources(), R.color.colorMuted, null);
+        mAccentColor = (int) ResourcesCompat.getColor(getResources(), R.color.colorAccent, null);
 
         // Make statusbar transparent on newer versions of android
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -73,7 +82,7 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
             // enable navigation bar tint
             tintManager.setNavigationBarTintEnabled(true);
             // set the transparent color of the status bar
-            tintManager.setTintColor(Color.parseColor("#FF000000"));
+            tintManager.setTintColor(Color.BLACK);
         }
 
         if (extras != null) {
@@ -110,15 +119,16 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
             return;
         }
 
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(toolbar_layout);
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
         // Suggested to not use this typeface, but might be good in this long-form usage
-//        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+        // bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
         final ImageView photoView = (ImageView) mRootView.findViewById(R.id.photo_view);
 
 
         if (mCursor != null) {
-            ((CollapsingToolbarLayout) findViewById(toolbar_layout)).setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+            collapsingToolbarLayout.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
             bylineView.setText(Html.fromHtml(
                     DateUtils.getRelativeTimeSpanString(
                             mCursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
@@ -133,10 +143,23 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
                         public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
+                                // Generate muted and vibrant colors from the image and use
+                                // as background and FAB colors
+                                Palette p = new Palette.Builder(bitmap).generate();
+                                mMutedColor = p.getDarkMutedColor(mMutedColor);
+                                mAccentColor = p.getVibrantColor(mAccentColor);
+                                collapsingToolbarLayout.setContentScrimColor(mMutedColor);
+                                ((FloatingActionButton) mRootView.findViewById(R.id.fab))
+                                        .setBackgroundTintList(ColorStateList.valueOf(mAccentColor));
+
+                                // Set the image to the collapsing toolbar background and use
+                                // some animations to fade it in
+                                photoView.setImageBitmap(imageContainer.getBitmap());
                                 Animation fadeIn = AnimationUtils.loadAnimation(ArticleDetailMaterialActivity.this, R.anim.fade_in);
                                 photoView.setImageBitmap(imageContainer.getBitmap());
                                 photoView.setAnimation(fadeIn);
                                 fadeIn.start();
+
                             }
                         }
 
@@ -146,8 +169,8 @@ public class ArticleDetailMaterialActivity extends AppCompatActivity implements
                         }
                     });
         } else {
-            getSupportActionBar().setTitle("N/A");
-            bylineView.setText("N/A" );
+            collapsingToolbarLayout.setTitle("N/A");
+            bylineView.setText("N/A");
             bodyView.setText("N/A");
         }
     }
