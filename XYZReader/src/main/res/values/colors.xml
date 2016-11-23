@@ -18,9 +18,13 @@
 <resources>
     <color name="photo_placeholder">#ccc</color>
 
-    <color name="colorPrimary">#9C27B0</color>
-    <color name="colorPrimaryDark">#7B1FA2</color>
-    <color name="colorPrimaryLight">#BA68C8</color>
+    <!--Make primary colors gray so that they don't clash when using palette colors
+    Otherwise, when scrolling to top or bottom of list, you'd see some other color
+    and it would look rather odd. If you know a way to programmatically change those
+    colors, please let me know-->
+    <color name="colorPrimary">#9E9E9E</color>
+    <color name="colorPrimaryDark">#616161</color>
+    <color name="colorPrimaryLight">#E0E0E0</color>
     <color name="colorAccent">#FF9100</color>
     <color name="ltgray">#ffe0e0e0</color>
     <color name="colorMuted">#333333</color>

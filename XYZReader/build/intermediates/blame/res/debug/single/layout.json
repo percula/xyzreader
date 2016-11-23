@@ -152,10 +152,6 @@
         "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/res/layout/abc_dialog_title_material.xml"
     },
     {
-        "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/layout/activity_article_detail.xml",
-        "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/src/main/res/layout/activity_article_detail.xml"
-    },
-    {
         "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/layout/notification_template_part_time.xml",
         "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/res/layout/notification_template_part_time.xml"
     },
@@ -230,10 +226,6 @@
     {
         "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/layout/notification_template_big_media_custom.xml",
         "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/res/layout/notification_template_big_media_custom.xml"
-    },
-    {
-        "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/layout/fragment_article_detail.xml",
-        "source": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/src/main/res/layout/fragment_article_detail.xml"
     },
     {
         "merged": "/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/res/merged/debug/layout/design_text_input_password_icon.xml",
