@@ -4,11 +4,15 @@ import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -19,8 +23,11 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.UpdaterService;
@@ -43,6 +50,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private int mBackgroundColor;
     private static String LOG_TAG = "ArticleListActivity";
 
     @Override
@@ -51,6 +59,9 @@ public class ArticleListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_article_list);
 
         mToolbar = (Toolbar) findViewById(toolbar);
+
+        // Set colors to values in color resources
+        mBackgroundColor = (int) ResourcesCompat.getColor(getResources(), R.color.colorMuted, null);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
@@ -129,22 +140,49 @@ public class ArticleListActivity extends AppCompatActivity implements
         int randomPic = r.nextInt(cursor.getCount());
 
         cursor.moveToPosition(randomPic);
-        DynamicHeightNetworkImageView toolbarImage = (DynamicHeightNetworkImageView) findViewById(R.id.toolbar_background);
 
-        Animation fadeIn = AnimationUtils.loadAnimation(ArticleListActivity.this, R.anim.fade_in);
-        Animation fadeOut = AnimationUtils.loadAnimation(ArticleListActivity.this, R.anim.fade_out);
+        ImageLoaderHelper.getInstance(this).getImageLoader()
+                .get(cursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                        Bitmap bitmap = imageContainer.getBitmap();
+                        if (bitmap != null) {
+                            ImageView toolbarImage = (ImageView) findViewById(R.id.toolbar_background);
 
-        toolbarImage.setAnimation(fadeOut);
-        fadeOut.start();
+                            // Create animations
+                            Animation fadeIn = AnimationUtils.loadAnimation(ArticleListActivity.this, R.anim.fade_in);
+                            Animation fadeOut = AnimationUtils.loadAnimation(ArticleListActivity.this, R.anim.fade_out);
 
-        toolbarImage.setImageUrl(
-                cursor.getString(ArticleLoader.Query.THUMB_URL),
-                ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
-        toolbarImage.setAspectRatio(cursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+                            // Generate vibrant color to use as background
+                            Palette p = new Palette.Builder(bitmap).generate();
+                            mBackgroundColor = p.getVibrantColor(mBackgroundColor);
+                            ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout))
+                                    .setContentScrimColor(mBackgroundColor);
 
-        toolbarImage.setAnimation(fadeIn);
-        fadeIn.start();
+                            // Create cool colors for the refresh animation
+                            int color1 = p.getLightVibrantColor(mBackgroundColor);
+                            int color2 = p.getVibrantColor(mBackgroundColor);
+                            int color3 = p.getDarkVibrantColor(mBackgroundColor);
+                            int color4 = p.getMutedColor(mBackgroundColor);
+                            mSwipeRefreshLayout.setColorSchemeColors(
+                                    color1, color2, color3, color4);
 
+                            // Fade out any existing image
+                            toolbarImage.setAnimation(fadeOut);
+                            fadeOut.start();
+
+                            // Set the new image and fade in
+                            toolbarImage.setImageBitmap(bitmap);
+                            toolbarImage.setAnimation(fadeIn);
+                            fadeIn.start();
+                        }
+                    }
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                    }
+                });
+
+        // Stop refreshing animation now that everything is loaded
         mSwipeRefreshLayout.setRefreshing(false);
     }
 

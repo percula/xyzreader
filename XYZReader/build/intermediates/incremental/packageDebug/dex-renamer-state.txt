@@ -1,7 +1,0 @@
-#Tue Nov 22 23:55:03 UTC 2016
-base.0=/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_28b7e6ecd3552322d965b37a5b159b5fce090cf4
-renamed.1=classes2.dex
-renamed.0=classes.dex
-file.1=/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_7df2a26865c43b434a16f140759a422a27ad7af9/classes.dex
-base.1=/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_7df2a26865c43b434a16f140759a422a27ad7af9
-file.0=/home/peter/Google_Drive/Coding/Android_Developer_Nanodegree/Make_Your_App_Material_Project/xyzreader/XYZReader/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_28b7e6ecd3552322d965b37a5b159b5fce090cf4/classes.dex
